@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "433742930212",
+    "firebase_url": "https://loja-virtual-86251.firebaseio.com",
+    "project_id": "loja-virtual-86251",
+    "storage_bucket": "loja-virtual-86251.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433742930212:android:498c9ece3f926de1f693b1",
+        "android_client_info": {
+          "package_name": "com.caeduob.loja_virtual"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433742930212-tt24l36igmukf4am34pf7bar728nsktl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuuUGzNNIXEIVSnv9jZYb60R4e2DzWMmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433742930212-tt24l36igmukf4am34pf7bar728nsktl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
