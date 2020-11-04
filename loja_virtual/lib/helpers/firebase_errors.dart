@@ -14,7 +14,7 @@ String getErrorString(String code){
       return 'Não há usuário com este e-mail.';
     case 'ERROR_USER_DISABLED':
       return 'Este usuário foi desabilitado.';
-    case 'ERROR_TOO_MANY_REQUESTS':
+    case 'too-many-requests':
       return 'Muitas solicitações. Tente novamente mais tarde.';
     case 'operation-not-allowed':
       return 'Operação não permitida.';

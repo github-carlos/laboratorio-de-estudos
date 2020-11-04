@@ -6,11 +6,13 @@ import 'package:loja_virtual/helpers/validators.dart';
 
 class LoginScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(title: Text('Entrar'), centerTitle: true),
       body: Center(
         child: Card(
@@ -67,7 +69,19 @@ class LoginScreen extends StatelessWidget {
                         if (formKey.currentState.validate()) {
                           final email = emailController.value.text;
                           final password = passwordController.value.text;
-                          context.read<UserManager>().signIn(UserData(email, password));
+                          context.read<UserManager>().signIn(
+                              user: UserData(email, password),
+                              onSuccess: () {
+                                print('sucesso');
+                              },
+                              onFail: (error) {
+                                scaffoldKey.currentState.showSnackBar(
+                                  SnackBar(
+                                    content: Text(error),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              });
                         }
                       },
                       child: Text(
