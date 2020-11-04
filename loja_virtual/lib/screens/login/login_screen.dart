@@ -13,7 +13,18 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: AppBar(title: Text('Entrar'), centerTitle: true),
+      appBar: AppBar(
+        title: Text('Entrar'),
+        centerTitle: true,
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/signup');
+            },
+            child: Text('CRIAR CONTA', style: TextStyle(color: Colors.white, fontSize: 14),),
+          )
+        ],
+      ),
       body: Center(
         child: Card(
           margin: EdgeInsets.symmetric(horizontal: 16),
@@ -76,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                                   final password =
                                       passwordController.value.text;
                                   userManager.signIn(
-                                      user: UserData(email, password),
+                                      userData: UserData(email: email, password: password),
                                       onSuccess: () {
                                         print('sucesso');
                                       },
@@ -92,8 +103,9 @@ class LoginScreen extends StatelessWidget {
                               },
                         child: userManager.loading
                             ? CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation(Colors.white),
-                            )
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.white),
+                              )
                             : Text(
                                 'Entrar',
                                 style: TextStyle(fontSize: 18),

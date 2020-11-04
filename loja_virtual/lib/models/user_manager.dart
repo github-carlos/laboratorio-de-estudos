@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loja_virtual/helpers/firebase_errors.dart';
@@ -5,19 +6,59 @@ import 'package:loja_virtual/models/user.dart';
 
 class UserManager extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  bool loading = false;
-  Future<void> signIn({UserData user, Function onSuccess, Function onFail}) async {
-    setLoading(true);
-    try {
-      final UserCredential result = await auth.signInWithEmailAndPassword(email: user.email, password: user.password);
-      onSuccess(result);
-    } on FirebaseAuthException catch(err) {
-      onFail(getErrorString(err.code));
-    }
-    setLoading(false);
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool _loading = false;
+
+  UserData user;
+  UserManager() {
+    _loadCurrentUser();
   }
 
-  void setLoading(bool value) {
+  void _loadCurrentUser({User firebaseUser}) async {
+    final User currentUser = firebaseUser ?? auth.currentUser;
+    if (currentUser != null) {
+      final DocumentSnapshot docUser =
+          await firestore.collection('users').doc(currentUser.uid).get();
+      user = UserData.fromDocument(docUser);
+      print('nome ${user.name}');
+      notifyListeners();
+    }
+  }
+
+  get loading => _loading;
+  Future<void> signIn(
+      {UserData userData, Function onSuccess, Function onFail}) async {
+    loading = true;
+    try {
+      final UserCredential result = await auth.signInWithEmailAndPassword(
+          email: userData.email, password: userData.password);
+      _loadCurrentUser(firebaseUser: result.user);
+      onSuccess(result);
+    } on FirebaseAuthException catch (err) {
+      onFail(getErrorString(err.code));
+    }
+    loading = false;
+  }
+
+  Future<void> signUp(
+      {UserData userData, Function onFail, Function onSuccess}) async {
+    // loading = true;
+    try {
+      final UserCredential result = await auth.createUserWithEmailAndPassword(
+          email: userData.email, password: userData.password);
+      userData.id = result.user.uid;
+      this.user = userData;
+      await userData.saveData();
+      onSuccess();
+    } on FirebaseAuthException catch (err) {
+      onFail(
+        getErrorString(err.code),
+      );
+    }
+    // loading = false;
+  }
+
+  set loading(bool value) {
     loading = value;
     notifyListeners();
   }

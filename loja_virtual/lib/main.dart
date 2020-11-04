@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
+import 'package:loja_virtual/screens/signup/signup_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -10,7 +10,6 @@ void main() async {
   await Firebase.initializeApp();
 
   runApp(MyApp());
-  FirebaseFirestore.instance.collection('teste').add({'teste2': 'teste2'});
 }
 
 class MyApp extends StatelessWidget {
@@ -27,8 +26,17 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(elevation: 0),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: BaseScreen(),
         debugShowCheckedModeBanner: false,
+        initialRoute: '/base',
+        onGenerateRoute: (settings) {
+          switch(settings.name) {
+            case '/signup':
+              return MaterialPageRoute(builder: (_) => SignUpScreen(),);
+            case '/base':
+            default:
+              return MaterialPageRoute(builder: (_) => BaseScreen(),);
+          }
+        },
       ),
     );
   }

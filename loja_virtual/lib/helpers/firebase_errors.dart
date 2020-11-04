@@ -4,7 +4,7 @@ String getErrorString(String code){
       return 'Sua senha é muito fraca.';
     case 'invalid-email':
       return 'Seu e-mail é inválido.';
-    case 'email-already-exists':
+    case 'email-already-in-use':
       return 'E-mail já está sendo utilizado em outra conta.';
     case 'ERROR_INVALID_CREDENTIAL':
       return 'Seu e-mail é inválido.';
