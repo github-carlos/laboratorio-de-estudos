@@ -21,79 +21,92 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Form(
               key: formKey,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      hintText: 'E-mail',
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    validator: (email) {
-                      if (emailValid(email)) {
-                        return null;
-                      }
-                      return 'E-mail invalido';
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      hintText: 'Senha',
-                    ),
-                    autocorrect: false,
-                    obscureText: true,
-                    validator: (password) {
-                      if (password.isEmpty || password.length < 6) {
-                        return 'Senha invalida';
-                      }
-                      return null;
-                    },
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: FlatButton(
-                      padding: EdgeInsets.zero,
-                      child: Text('Esqueci minha senha'),
-                      onPressed: () {},
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  SizedBox(
-                    height: 44,
-                    child: RaisedButton(
-                      onPressed: () {
-                        if (formKey.currentState.validate()) {
-                          final email = emailController.value.text;
-                          final password = passwordController.value.text;
-                          context.read<UserManager>().signIn(
-                              user: UserData(email, password),
-                              onSuccess: () {
-                                print('sucesso');
-                              },
-                              onFail: (error) {
-                                scaffoldKey.currentState.showSnackBar(
-                                  SnackBar(
-                                    content: Text(error),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              });
-                        }
-                      },
-                      child: Text(
-                        'Entrar',
-                        style: TextStyle(fontSize: 18),
+              child: Consumer<UserManager>(builder: (_, userManager, __) {
+                return ListView(
+                  shrinkWrap: true,
+                  children: [
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        hintText: 'E-mail',
                       ),
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                      enabled: !userManager.loading,
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      validator: (email) {
+                        if (emailValid(email)) {
+                          return null;
+                        }
+                        return 'E-mail invalido';
+                      },
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        hintText: 'Senha',
+                      ),
+                      enabled: !userManager.loading,
+                      autocorrect: false,
+                      obscureText: true,
+                      validator: (password) {
+                        if (password.isEmpty || password.length < 6) {
+                          return 'Senha invalida';
+                        }
+                        return null;
+                      },
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        padding: EdgeInsets.zero,
+                        child: Text('Esqueci minha senha'),
+                        onPressed: () {},
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    SizedBox(
+                      height: 44,
+                      child: RaisedButton(
+                        onPressed: userManager.loading
+                            ? null
+                            : () {
+                                if (formKey.currentState.validate()) {
+                                  final email = emailController.value.text;
+                                  final password =
+                                      passwordController.value.text;
+                                  userManager.signIn(
+                                      user: UserData(email, password),
+                                      onSuccess: () {
+                                        print('sucesso');
+                                      },
+                                      onFail: (error) {
+                                        scaffoldKey.currentState.showSnackBar(
+                                          SnackBar(
+                                            content: Text(error),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      });
+                                }
+                              },
+                        child: userManager.loading
+                            ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            )
+                            : Text(
+                                'Entrar',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                        disabledColor:
+                            Theme.of(context).primaryColor.withAlpha(100),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                      ),
+                    )
+                  ],
+                );
+              }),
             ),
           ),
         ),
