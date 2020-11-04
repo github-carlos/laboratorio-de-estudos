@@ -20,12 +20,14 @@ class UserManager extends ChangeNotifier {
       final DocumentSnapshot docUser =
           await firestore.collection('users').doc(currentUser.uid).get();
       user = UserData.fromDocument(docUser);
-      print('nome ${user.name}');
       notifyListeners();
     }
   }
 
   get loading => _loading;
+
+  bool get isLoggedIn => user != null;
+
   Future<void> signIn(
       {UserData userData, Function onSuccess, Function onFail}) async {
     loading = true;
@@ -33,16 +35,22 @@ class UserManager extends ChangeNotifier {
       final UserCredential result = await auth.signInWithEmailAndPassword(
           email: userData.email, password: userData.password);
       _loadCurrentUser(firebaseUser: result.user);
-      onSuccess(result);
+      onSuccess();
     } on FirebaseAuthException catch (err) {
       onFail(getErrorString(err.code));
     }
     loading = false;
   }
+  
+  void signOut() {
+    auth.signOut();
+    user = null;
+    notifyListeners();
+  }
 
   Future<void> signUp(
       {UserData userData, Function onFail, Function onSuccess}) async {
-    // loading = true;
+    loading = true;
     try {
       final UserCredential result = await auth.createUserWithEmailAndPassword(
           email: userData.email, password: userData.password);
@@ -55,11 +63,11 @@ class UserManager extends ChangeNotifier {
         getErrorString(err.code),
       );
     }
-    // loading = false;
+    loading = false;
   }
 
   set loading(bool value) {
-    loading = value;
+    _loading = value;
     notifyListeners();
   }
 }

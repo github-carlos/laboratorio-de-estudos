@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                                   userManager.signIn(
                                       userData: UserData(email: email, password: password),
                                       onSuccess: () {
-                                        print('sucesso');
+                                        Navigator.of(context).pop();
                                       },
                                       onFail: (error) {
                                         scaffoldKey.currentState.showSnackBar(

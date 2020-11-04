@@ -21,100 +21,112 @@ class SignUpScreen extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 16),
           child: Form(
             key: formKey,
-            child: ListView(
-              padding: EdgeInsets.all(16),
-              shrinkWrap: true,
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Nome Completo'),
-                  validator: (name) {
-                    if (name.isEmpty) {
-                      return 'Campo obrigatorio';
-                    }
-                    return null;
-                  },
-                  onSaved: (name) => userData.name = name,
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'E-mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  validator: (email) {
-                    if (email.isEmpty) {
-                      return 'Campo obrigatorio';
-                    }
-                    if (emailValid(email)) {
-                      return null;
-                    }
-                    return 'E-mail invalido';
-                  },
-                  onSaved: (email) => userData.email = email,
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Senha'),
-                  obscureText: true,
-                  validator: (password) {
-                    if (password.isEmpty) {
-                      return 'Campo obrigatorio';
-                    }
-                    if (password.length < 6) {
-                      return 'Senha muito curta';
-                    }
-                    return null;
-                  },
-                  onSaved: (password) => userData.password = password,
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Repita a Senha'),
-                  obscureText: true,
-                  validator: (password) {
-                    if (password.isEmpty) {
-                      return 'Campo obrigatorio';
-                    }
-                    if (password.length < 6) {
-                      return 'Senha muito curta';
-                    }
-                    return null;
-                  },
-                  onSaved: (confirmPassword) =>
-                      userData.confirmPassword = confirmPassword,
-                ),
-                SizedBox(height: 16),
-                SizedBox(
-                  height: 44,
-                  child: RaisedButton(
-                    onPressed: () {
-                      if (formKey.currentState.validate()) {
-                        formKey.currentState.save();
-
-                        if (userData.password != userData.confirmPassword) {
-                          showError('Senhas nao coincidem');
-                        }
-                        // user manager
-                        context.read<UserManager>().signUp(
-                            userData: userData,
-                            onFail: (message) {
-                              showError(message);
-                            },
-                            onSuccess: (message) {
-                              print('sucesso');
-                            });
+            child: Consumer<UserManager>(builder: (_, userManager, __) {
+              return ListView(
+                padding: EdgeInsets.all(16),
+                shrinkWrap: true,
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'Nome Completo'),
+                    validator: (name) {
+                      if (name.isEmpty) {
+                        return 'Campo obrigatorio';
                       }
+                      return null;
                     },
-                    child: Text(
-                      'Criar Conta',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    color: Theme.of(context).primaryColor,
-                    disabledColor:
-                        Theme.of(context).primaryColor.withAlpha(100),
+                    onSaved: (name) => userData.name = name,
+                    enabled: !userManager.loading,
                   ),
-                )
-              ],
-            ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                      decoration: InputDecoration(hintText: 'E-mail'),
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      validator: (email) {
+                        if (email.isEmpty) {
+                          return 'Campo obrigatorio';
+                        }
+                        if (emailValid(email)) {
+                          return null;
+                        }
+                        return 'E-mail invalido';
+                      },
+                      onSaved: (email) => userData.email = email,
+                      enabled: !userManager.loading),
+                  SizedBox(height: 16),
+                  TextFormField(
+                      decoration: InputDecoration(hintText: 'Senha'),
+                      obscureText: true,
+                      validator: (password) {
+                        if (password.isEmpty) {
+                          return 'Campo obrigatorio';
+                        }
+                        if (password.length < 6) {
+                          return 'Senha muito curta';
+                        }
+                        return null;
+                      },
+                      onSaved: (password) => userData.password = password,
+                      enabled: !userManager.loading),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'Repita a Senha'),
+                    obscureText: true,
+                    validator: (password) {
+                      if (password.isEmpty) {
+                        return 'Campo obrigatorio';
+                      }
+                      if (password.length < 6) {
+                        return 'Senha muito curta';
+                      }
+                      return null;
+                    },
+                    onSaved: (confirmPassword) =>
+                        userData.confirmPassword = confirmPassword,
+                    enabled: !userManager.loading,
+                  ),
+                  SizedBox(height: 16),
+                  SizedBox(
+                    height: 44,
+                    child: RaisedButton(
+                      onPressed: userManager.loading
+                          ? null
+                          : () {
+                              if (formKey.currentState.validate()) {
+                                formKey.currentState.save();
+
+                                if (userData.password !=
+                                    userData.confirmPassword) {
+                                  showError('Senhas nao coincidem');
+                                }
+                                // user manager
+                                userManager.signUp(
+                                    userData: userData,
+                                    onFail: (message) {
+                                      showError(message);
+                                    },
+                                    onSuccess: () {
+                                      Navigator.of(context).pop();
+                                    });
+                              }
+                            },
+                      child: userManager.loading
+                          ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            )
+                          : Text(
+                              'Criar Conta',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                      color: Theme.of(context).primaryColor,
+                      disabledColor:
+                          Theme.of(context).primaryColor.withAlpha(100),
+                    ),
+                  )
+                ],
+              );
+            }),
           ),
         ),
       ),
