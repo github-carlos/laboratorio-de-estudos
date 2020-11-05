@@ -1,0 +1,4 @@
+#Wed Aug 05 18:34:49 BRT 2020
+base.0=D\:\\AndroidStudioProjects\\Clima-Flutter\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
