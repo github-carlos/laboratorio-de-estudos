@@ -1,6 +1,7 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/product.dart';
+import 'package:loja_virtual/screens/product_detail/components/size_widget.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
@@ -61,12 +62,18 @@ class ProductDetailScreen extends StatelessWidget {
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                     ),
+                    Text(product.description, style: TextStyle(fontSize: 16)),
                     Text(
-                      product.description,
-                      style: TextStyle(
-                        fontSize: 16
-                      )
-                    )
+                      'Tamanhos',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                        children: product.sizes.map((e) {
+                      return SizeWidget(e); 
+                    }).toList()),
                   ],
                 ))
           ],
