@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:loja_virtual/models/item_size.dart';
 
-class Product {
+class Product extends ChangeNotifier {
   String id;
   String name;
   String description;
@@ -18,4 +19,20 @@ class Product {
         .toList();
   }
   Product({this.name, this.description, this.images});
+
+  ItemSize _selectedSize;
+
+  set selectedSize(ItemSize value) {
+    _selectedSize = value;
+    notifyListeners();
+  }
+
+  ItemSize get selectedSize => _selectedSize;
+  int get totalStock {
+    int stock = 0;
+    for (final size in sizes) {
+      stock += size.stock;
+    }
+    return stock;
+  }
 }
