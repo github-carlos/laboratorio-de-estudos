@@ -35,4 +35,12 @@ class Product extends ChangeNotifier {
     }
     return stock;
   }
+
+  ItemSize findSize(String size) {
+    try {
+      return sizes.firstWhere((element) => element.name == size);
+    } catch(err) {
+      return null;
+    }
+  }
 }
