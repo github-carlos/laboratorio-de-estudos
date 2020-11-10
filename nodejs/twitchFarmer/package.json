@@ -1,0 +1,25 @@
+{
+  "name": "twitchfarmer",
+  "version": "1.0.0",
+  "description": "A bot to farm points in Twitch.tv channels",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zevet/twitchStoreFarmer.git"
+  },
+  "author": "Carlos O",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zevet/twitchStoreFarmer/issues"
+  },
+  "homepage": "https://github.com/zevet/twitchStoreFarmer#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "nightmare": "^3.0.2",
+    "puppeteer": "^5.1.0"
+  }
+}
