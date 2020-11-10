@@ -10,7 +10,7 @@ class Product extends ChangeNotifier {
   List<ItemSize> sizes;
 
   Product.fromDocument(DocumentSnapshot document) {
-    id = document.data()['id'];
+    id = document.id;
     name = document.data()['name'];
     description = document.data()['description'];
     images = List<String>.from(document.data()['images'] as List<dynamic>);

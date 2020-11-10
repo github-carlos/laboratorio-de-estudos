@@ -15,11 +15,25 @@ class CartManager {
       _loadCartItems();
     }
   }
+
   void addToCart(Product product) {
-    items.add(CartProduct.fromProduct(product),);
+    try {
+      final e = items.firstWhere(
+        (p) => p.stackable(product),
+      );
+      e.quantity++;
+    } catch (err) {
+      final cartProduct = CartProduct.fromProduct(product);
+      items.add(
+        cartProduct,
+      );
+      user.cartReference.add(
+        cartProduct.toMap(),
+      );
+    }
   }
 
-  Future<void>_loadCartItems() async {
+  Future<void> _loadCartItems() async {
     final QuerySnapshot cartSnap = await user.cartReference.get();
 
     items = cartSnap.docs.map((e) => CartProduct.fromDocument(e)).toList();

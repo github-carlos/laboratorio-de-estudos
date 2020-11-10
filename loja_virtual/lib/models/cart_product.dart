@@ -39,4 +39,15 @@ class CartProduct {
     }
     return itemSize?.price ?? 0;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'pid': this.productId,
+      'quantity': this.quantity,
+      'size': this.size
+    };
+  }
+  bool stackable(Product newProduct) {
+   return productId == newProduct.id && size == newProduct.selectedSize.name;
+  }
 }
