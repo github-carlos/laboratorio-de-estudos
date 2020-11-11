@@ -50,4 +50,11 @@ class CartProduct {
   bool stackable(Product newProduct) {
    return productId == newProduct.id && size == newProduct.selectedSize.name;
   }
+
+  void increment() {
+    quantity++;
+  }
+  void decrement() {
+    quantity--;
+  }
 }
