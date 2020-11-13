@@ -1,0 +1,16 @@
+FROM node:14-alpine
+
+# fala que todos comandos que rodar serao refletidos na pasta src
+WORKDIR /src
+
+ADD package.json /src
+
+RUN npm i --silent
+
+ADD . /src
+
+RUN npm run build
+
+CMD npm start
+
+docker-compose up --build

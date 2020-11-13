@@ -1,0 +1,31 @@
+
+# criar container com nome mongodb na porta 27017 rodando em background (-d) atraves da imagem mongo:4
+docker run --name mongodb -p 27017:27017 -d mongo:4
+
+# Executar um comando dentro do container para entrar no banco de dados
+docker exec -it mongodb mongo
+
+# Criar .dockignore
+
+# Criar dockerfile
+
+# app docker build -t app seu-aplicativo
+
+# agora executar a aplicacao
+docker run --name app --link mongodb -e MONGO_URL=mongodb \
+-e PORT=4000 \
+-p 4000:4000 \
+-v `pwd`/seu-aplicativo:/src \
+-v nodemodules:/src/node_modules
+app npm run dev:watch
+
+
+# criar volume
+docker volume create --name nodemodules 
+
+docker rm app
+docker volume rm nodemodules
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+
+#instalar docker-compose
