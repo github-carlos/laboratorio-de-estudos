@@ -1,0 +1,91 @@
+// criar imagem a partir do docker file
+docker build -t docker-101 .
+// cria uma imagem chamada docker-101 considerando o dockerfile local
+
+// iniciando o container
+docker run -dp 3000:3000 docker-101
+// inicia o container para a imagem docker-101 modo detached (background)
+// na porta (-p) 3000 do host apontando para a porta 3000 do container
+
+// listar todas imagens
+docker image ls
+
+// logar no docker hub
+docker login -u USERNAME
+
+// dar uma tag a imagem
+docker tag docker-101 USERNAME/101-todo-app
+
+// criar um container ubuntu que criará um arquivo chamado data.txt com um número aleatório entre 1 e 1000
+docker run -d ubuntu bash -c "shuf -i 1-10000 -n 1 -o /data.txt && tail -f /dev/null"
+
+# volumes
+volumes dao a habilidade de conectar caminhos do sistema de arquivos
+do container com o do host. se um diretorio que o container está montado for alterado
+também será possível na maquina hospedeira. 
+
+há dois tipos principais de volumes, uma deles é são os VOLUMES NOMEADOS
+
+// criar volume
+docker volume create todo-db
+
+// iniciando container conectado a um volume
+docker run -dp 3000:3000 -v todo-db:/etc/todos docker-101
+
+// pegar mais info sobre um volume
+docker volume inspect NOME_DO_VOLUME
+
+# BIND MOUNTS
+com o bind mounts nós podemos controlar exatamente o ponto de montagem no host.
+Podemos usar para persistir dados mas é geralmente utilizado para prover dados adicionais aos containers.
+Podemos usar um bind mount para montar nosso código fonte ao container para deixar que ele veja mudanças no código,
+responder, e nos deixar as mudanças em tempo real.
+
+Para aplicações baseadas em Node, nodemon é uma grande ferramenta para assistir mudanças de arquivos e então restartar
+a aplicação. 
+
+	                                              Named Volumes	                                      Bind Mounts
+Host Location	                                  Docker chooses                                     	You control
+Mount Example (using -v)	                     my-volume:/usr/local/data               	/path/to/data:/usr/local/data
+Populates new volume with container contents	     Yes	                                                No
+Supports Volume Drivers	                             Yes	                                                No
+
+
+docker run -dp 3000:3000 \
+    -w /app -v $PWD:/app \
+    node:10-alpine \
+    sh -c "yarn install && yarn run dev"
+
+# explicação do código acima
+-w /app  - seta o working directory ou o diretório corrente que o comando irá rodar
+node:10-alpine - a imagem para usar. note que essa é a imagem da nossa imagem base para nossa aplicação no dockerfile
+sh -c "yarn install && yarn run dev" - estamos startando um shell com sh e rodando yarn install para installar as dependencias e então rodando yarn run dev
+
+# ver logs do container docker logs -f <container-id>
+
+# Container Networking
+    Os containers por padrão não sabem nada sobre os processos ou outros containers rodando na mesma máquiina. Então para que seja possível
+que containers se comuniquem, existe o Networking.
+"Se dois containers estão na mesma network, eles podem se comunicar. Se eles não estão, eles não podem"
+
+Há duas formas de por um container em uma NETWORK 1) atribuir ao iniciar ou 2) conectar a um container existente.
+
+# Criando uma network
+docker network create todo-app
+
+# criar um container mysql e conectar a network. 
+docker run -d --network todo-app --network-alias mysql \
+-v todo-mysql-data:/var/lib/mysql \
+-e MYSQL_ROOT_PASSWORD=secret \
+-e MYSQL_DATABASE=todos \
+mysql:5.7
+
+# confirmar que temos um database rodando
+docker exec -it <mysql-id-container> mysql -p
+
+ nicolaka/netshoot container, which ships with a lot of tools that are useful for troubleshooting or debugging networking issues.
+
+ docker run -it --network todo-app nicolaka/netshoot
+
+dig command é uma ferramenta DNS
+ dig mysql
