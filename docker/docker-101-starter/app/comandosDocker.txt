@@ -1,3 +1,5 @@
+docker run -dp 80:80 docker/getting-started:pwd
+
 // criar imagem a partir do docker file
 docker build -t docker-101 .
 // cria uma imagem chamada docker-101 considerando o dockerfile local
