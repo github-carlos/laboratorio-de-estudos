@@ -13,6 +13,7 @@ class UserData {
   String email;
   String password;
   String confirmPassword;
+  bool admin = false;
 
   DocumentReference get firestoreRef {
    return FirebaseFirestore.instance.doc('users/$id');

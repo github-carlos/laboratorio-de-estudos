@@ -11,15 +11,20 @@ class CartProduct extends ChangeNotifier {
   }
 
   CartProduct.fromDocument(DocumentSnapshot document) {
+    id = document.id;
     productId = document.data()['pid'] as String;
     quantity = document.data()['quantity'] as int;
     size = document.data()['size'] as String;
 
-    firestore.doc('products/$productId').get().then((doc) => product = Product.fromDocument(doc));
-
+    firestore.doc('products/$productId').get().then((doc) {
+      product = Product.fromDocument(doc);
+      notifyListeners();
+    });
   }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  String id;
 
   String productId;
   int quantity;
@@ -41,6 +46,10 @@ class CartProduct extends ChangeNotifier {
     return itemSize?.price ?? 0;
   }
 
+  num get totalPrice {
+    return unitPrice * quantity;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'pid': this.productId,
@@ -48,16 +57,26 @@ class CartProduct extends ChangeNotifier {
       'size': this.size
     };
   }
+
   bool stackable(Product newProduct) {
-   return productId == newProduct.id && size == newProduct.selectedSize.name;
+    return productId == newProduct.id && size == newProduct.selectedSize.name;
   }
 
   void increment() {
     quantity++;
     notifyListeners();
   }
+
   void decrement() {
     quantity--;
     notifyListeners();
+  }
+
+  bool get hasStock {
+    final size = itemSize;
+    if (size == null) {
+      return false;
+    }
+    return size.stock >= quantity;
   }
 }
