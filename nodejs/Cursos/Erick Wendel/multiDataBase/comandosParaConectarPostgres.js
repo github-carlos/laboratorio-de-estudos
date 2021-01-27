@@ -36,5 +36,7 @@ async function main() {
     tableName: 'TB_HEROIS',
     freezeTableName: false,
     timestamps: false
-  })
+  });
+  await Herois.sync();
+  const result = await Herois.findAll({raw: true});
 }
