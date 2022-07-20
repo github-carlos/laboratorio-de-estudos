@@ -5,10 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Dart: Run all Tests",
+      "name": "Flutter: Attach to Device",
       "type": "dart",
-      "request": "launch",
-      "program": "./test/"
+      "request": "attach"
     },
     {
       "name": "tdd_clean_arch",
@@ -26,6 +25,12 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
+    },
+    {
+      "name": "Flutter: Run all Tests",
+      "type": "dart",
+      "request": "launch",
+      "program": "./test/"
     }
   ]
 }
