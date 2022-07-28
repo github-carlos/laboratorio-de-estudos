@@ -23,7 +23,7 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
   }
 
   @override
-  Future<NumberTriviaModel> getLastNumberTrivia() {
+  Future<NumberTriviaModel> getLastNumberTrivia() async {
     final savedNumberInString =
         sharedPreferences.getString(CACHED_NUMBER_TRIVIA);
 
