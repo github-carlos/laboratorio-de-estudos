@@ -25,3 +25,5 @@ function search(nums: number[], target: number): number {
   }
   return middle;
 }
+
+console.log(search([3,0,2,5,1], 5))
