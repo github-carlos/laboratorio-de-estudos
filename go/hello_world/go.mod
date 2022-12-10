@@ -1,3 +1,3 @@
-module hello
+module hellomessage
 
 go 1.19
