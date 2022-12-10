@@ -9,6 +9,8 @@ node_modules/
 .buildlog/
 .history
 .svn/
+.terraform
+*/.terraform/*
 
 # IntelliJ related
 *.iml
