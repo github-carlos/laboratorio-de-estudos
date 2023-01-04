@@ -22,9 +22,7 @@ type Product struct {
 	Status string
 }
 
-func (p *Product) IsValid() (bool, error) {
-
-}
+func (p *Product) IsValid() (bool, error) {}
 
 func (p *Product) Enable() error {}
 func (p *Product) Disable() error {}
