@@ -6,7 +6,7 @@ import (
 	"carlos.com/application"
 )
 
-func Run(service application.ProductService, action string, productId string, productName string, price float64) (string, error) {
+func Run(service application.ProductServiceInterface, action string, productId string, productName string, price float64) (string, error) {
 	var result = ""
 
 	switch action {
