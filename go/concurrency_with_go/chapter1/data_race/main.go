@@ -18,7 +18,7 @@ func main() {
 		memoryAccess.Unlock()
 	}()
 
-	time.Sleep(1 * time.Second)
+	// time.Sleep(1 * time.Second)
 	memoryAccess.Lock()
 	time.Sleep(2 * time.Second)
 	if data == 0 {
