@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"chapter3/a"
+	"fmt"
+)
 
 func main() {
 
@@ -67,4 +70,7 @@ func main() {
 	// deleting
 	delete(m, "hello")
 	fmt.Println(m)
+
+	a.TrySwitch()
+
 }
