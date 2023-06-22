@@ -10,6 +10,11 @@ import (
 func main() {
 	fmt.Println("Reading file...")
 	args := os.Args
+
+	if len(args) < 2 {
+		log.Fatal("Filename not provided")
+	}
+
 	var fileName string = args[1]
 
 	file, err := os.Open(fileName)
