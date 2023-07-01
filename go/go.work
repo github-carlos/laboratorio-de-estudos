@@ -2,3 +2,4 @@ go 1.20
 
 use ./learning_go/ch1
 use ./learning_go/ch3
+use ./microservices_wallet_core
