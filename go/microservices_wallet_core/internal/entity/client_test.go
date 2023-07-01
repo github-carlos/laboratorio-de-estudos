@@ -48,3 +48,20 @@ func Test_UpdateClientWithError(t *testing.T) {
 	assert.NotNil(t, err)
 	assert.Equal(t, err.Error(), "Invalid Params")
 }
+
+func TestAddAccount(t *testing.T) {
+	client, _ := NewClient("Carlos", "Carlos@email.com")
+	account := NewAccount(client)
+	client.addAccount(account)
+	assert.Equal(t, 1, len(client.Accounts))
+}
+
+func TestAddAccountError(t *testing.T) {
+	client, _ := NewClient("Carlos", "Carlos@email.com")
+	account := NewAccount(client)
+
+	client2, _ := NewClient("Eduardo", "eduardo@email")
+	error := client2.addAccount(account)
+	assert.NotNil(t, error)
+	assert.Equal(t, error.Error(), "Account does not belong to this client")
+}
