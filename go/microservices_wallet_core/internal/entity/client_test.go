@@ -31,3 +31,20 @@ func Test_ReturnErrorWhenInvalidEmail(t *testing.T) {
 	assert.Nil(t, client)
 	assert.Equal(t, err.Error(), "Email must be given")
 }
+
+func Test_UpdateClientWithSuccess(t *testing.T) {
+	client, _ := NewClient("carlos", "carlos@email")
+	assert.NotNil(t, client)
+	err := client.Update("Carlos Eduardo", "carlos@email")
+	assert.Nil(t, err)
+	assert.Equal(t, "Carlos Eduardo", client.Name)
+	assert.Equal(t, "carlos@email", client.Email)
+}
+
+func Test_UpdateClientWithError(t *testing.T) {
+	client, _ := NewClient("carlos", "carlos@email")
+	assert.NotNil(t, client)
+	err := client.Update("", "carlos@email")
+	assert.NotNil(t, err)
+	assert.Equal(t, err.Error(), "Invalid Params")
+}
