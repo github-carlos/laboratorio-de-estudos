@@ -35,3 +35,9 @@ func (s *AccountDBTestSuite) TearDownSuite() {
 func TestAccountDBTestSuite(t *testing.T) {
 	suite.Run(t, new(AccountDBTestSuite))
 }
+
+func (s *AccountDBTestSuite) TestSave() {
+	account := entity.NewAccount(s.client)
+	err := s.accountDB.Save(account)
+	s.Nil(err)
+}
