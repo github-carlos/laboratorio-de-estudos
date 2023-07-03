@@ -20,7 +20,10 @@ type CreateTransactionUseCase struct {
 }
 
 func NewCreateTransactionUseCase(tg gateway.TransactionGateway, ag gateway.AccountGateway) CreateTransactionUseCase {
-	return CreateTransactionUseCase{}
+	return CreateTransactionUseCase{
+		TransactionGateway: tg,
+		AccountGateway:     ag,
+	}
 }
 
 func (uc CreateTransactionUseCase) Execute(input CreateTransactionInputDto) (*CreateTransactionOutputDto, error) {
