@@ -16,7 +16,7 @@ type ClientDBTestSuite struct {
 }
 
 func (c *ClientDBTestSuite) SetupSuite() {
-	db, err := sql.Open("sqlite3", ":memory")
+	db, err := sql.Open("sqlite3", ":memory:")
 	c.Nil(err)
 	c.db = db
 	db.Exec("CREATE TABLE clients (id varchar(255), name varchar(255), email varchar(255), created_at date)")
