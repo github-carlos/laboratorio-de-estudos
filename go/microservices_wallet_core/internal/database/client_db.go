@@ -35,7 +35,7 @@ func (db *ClientDB) Get(id string) (*entity.Client, error) {
 }
 
 func (db *ClientDB) Save(client *entity.Client) error {
-	stmt, err := db.DB.Prepare("INSERTO INTO clients (id, name, email, created_at) VALUES (?, ?, ?, ?)")
+	stmt, err := db.DB.Prepare("INSERT INTO clients (id, name, email, created_at) VALUES (?, ?, ?, ?)")
 
 	if err != nil {
 		return err
