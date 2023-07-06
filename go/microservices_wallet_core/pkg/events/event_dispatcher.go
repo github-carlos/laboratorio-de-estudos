@@ -49,7 +49,7 @@ func (ed *EventDispatcher) Dispatch(event EventInterface) error {
 	}
 
 	for _, h := range handlers {
-		h.Handle(event)
+		go h.Handle(event)
 	}
 
 	return nil

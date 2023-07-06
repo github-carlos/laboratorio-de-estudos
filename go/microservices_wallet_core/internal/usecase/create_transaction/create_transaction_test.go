@@ -2,6 +2,8 @@ package createtransaction
 
 import (
 	"microserviceswalletcore/internal/entity"
+	"microserviceswalletcore/internal/event"
+	"microserviceswalletcore/pkg/events"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -53,7 +55,9 @@ func TestCreateTransactionUseCaseSuccess(t *testing.T) {
 		amount:        100,
 	}
 
-	uc := NewCreateTransactionUseCase(mockTransaction, mockAccount)
+	dispatcher := events.NewEventDispatcher()
+	event := event.NewTransactionCreated()
+	uc := NewCreateTransactionUseCase(mockTransaction, mockAccount, &dispatcher, event)
 
 	output, err := uc.Execute(inputDto)
 	assert.Nil(t, err)
