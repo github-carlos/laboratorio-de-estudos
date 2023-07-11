@@ -51,7 +51,7 @@ func (uc CreateTransactionUseCase) Execute(input CreateTransactionInputDto) (*Cr
 		return nil, err
 	}
 
-	err = uc.TransactionGateway.Create(*transaction)
+	err = uc.TransactionGateway.Create(transaction)
 	if err != nil {
 		return nil, err
 	}

@@ -14,7 +14,7 @@ type TransactionGatewayMock struct {
 	mock.Mock
 }
 
-func (m *TransactionGatewayMock) Create(t entity.Transaction) error {
+func (m *TransactionGatewayMock) Create(t *entity.Transaction) error {
 	args := m.Called(t)
 	return args.Error(0)
 }
