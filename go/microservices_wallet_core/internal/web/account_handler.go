@@ -19,7 +19,7 @@ func NewWebAccountHandler(uc createaccount.CreateAccountUseCase) *WebAccountHand
 func (wac *WebAccountHandler) CreateAccount(w http.ResponseWriter, r *http.Request) {
 	var dto createaccount.CreateAccountInputDto
 
-	err := json.NewDecoder(r.Body).Decode(dto)
+	err := json.NewDecoder(r.Body).Decode(&dto)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -40,8 +40,3 @@ func (wac *WebAccountHandler) CreateAccount(w http.ResponseWriter, r *http.Reque
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 }
-
-//decode
-//execute
-//encodar
-// retornar
