@@ -52,7 +52,7 @@ func TestCreateTransactionUseCaseSuccess(t *testing.T) {
 	inputDto := CreateTransactionInputDto{
 		AccountIDFrom: accountA.ID,
 		AccountIDTo:   accountB.ID,
-		amount:        100,
+		Amount:        100,
 	}
 
 	dispatcher := events.NewEventDispatcher()
