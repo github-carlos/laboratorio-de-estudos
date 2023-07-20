@@ -7,12 +7,12 @@ import (
 )
 
 type CreateTransactionInputDto struct {
-	AccountIDFrom string
-	AccountIDTo   string
-	amount        float64
+	AccountIDFrom string  `json:"account_id_from"`
+	AccountIDTo   string  `json:"account_id_to"`
+	Amount        float64 `json:"amount"`
 }
 type CreateTransactionOutputDto struct {
-	ID string
+	ID string `json:"id"`
 }
 
 type CreateTransactionUseCase struct {
@@ -45,7 +45,7 @@ func (uc CreateTransactionUseCase) Execute(input CreateTransactionInputDto) (*Cr
 	if err != nil {
 		return nil, err
 	}
-	transaction, err := entity.NewTransaction(accountFrom, accountTo, input.amount)
+	transaction, err := entity.NewTransaction(accountFrom, accountTo, input.Amount)
 
 	if err != nil {
 		return nil, err
