@@ -36,6 +36,11 @@ func (m *AccountGatewayMock) Save(ac *entity.Account) error {
 	return args.Error(0)
 }
 
+func (m *AccountGatewayMock) UpdateBalance(account *entity.Account) error {
+	m.Called(account)
+	return nil
+}
+
 func Test_CreateAccountUseCaseWithSuccess(t *testing.T) {
 	agMock := &AccountGatewayMock{}
 	agMock.On("Save", mock.Anything).Return(nil)

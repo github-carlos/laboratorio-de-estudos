@@ -25,7 +25,8 @@ func (wtc *WebTransactionHandler) CreateTransaction(w http.ResponseWriter, r *ht
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	output, err := wtc.CreateTransactionUseCase.Execute(dto)
+	ctx := r.Context()
+	output, err := wtc.CreateTransactionUseCase.Execute(ctx, dto)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
