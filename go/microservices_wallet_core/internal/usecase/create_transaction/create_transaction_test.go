@@ -1,8 +1,10 @@
 package createtransaction
 
 import (
+	"context"
 	"microserviceswalletcore/internal/entity"
 	"microserviceswalletcore/internal/event"
+	"microserviceswalletcore/internal/usecase/mocks"
 	"microserviceswalletcore/pkg/events"
 	"testing"
 
@@ -42,12 +44,9 @@ func TestCreateTransactionUseCaseSuccess(t *testing.T) {
 	accountB := entity.NewAccount(clientB)
 	accountB.Credit(1000)
 
-	mockAccount := &AccountGatewayMock{}
-	mockAccount.On("FindById", accountA.ID).Return(accountA, nil)
-	mockAccount.On("FindById", accountB.ID).Return(accountB, nil)
+	mockUow := &mocks.UowMock{}
 
-	mockTransaction := &TransactionGatewayMock{}
-	mockTransaction.On("Create", mock.Anything).Return(nil)
+	mockUow.On("Do", mock.Anything, mock.Anything).Return(nil)
 
 	inputDto := CreateTransactionInputDto{
 		AccountIDFrom: accountA.ID,
@@ -57,13 +56,12 @@ func TestCreateTransactionUseCaseSuccess(t *testing.T) {
 
 	dispatcher := events.NewEventDispatcher()
 	event := event.NewTransactionCreated()
-	uc := NewCreateTransactionUseCase(mockTransaction, mockAccount, &dispatcher, event)
+	ctx := context.Background()
+	uc := NewCreateTransactionUseCase(mockUow, &dispatcher, event)
 
-	output, err := uc.Execute(inputDto)
+	output, err := uc.Execute(ctx, inputDto)
 	assert.Nil(t, err)
 	assert.NotNil(t, output)
-	mockAccount.AssertExpectations(t)
-	mockTransaction.AssertExpectations(t)
-	mockAccount.AssertNumberOfCalls(t, "FindById", 2)
-	mockTransaction.AssertNumberOfCalls(t, "Create", 1)
+	mockUow.AssertExpectations(t)
+	mockUow.AssertNumberOfCalls(t, "Do", 1)
 }
