@@ -35,11 +35,11 @@ func main() {
 	ctx := context.Background()
 	uow := uow.NewUow(ctx, db)
 
-	uow.Register("AccountDb", func(tx *sql.Tx) interface{} {
+	uow.Register("AccountDB", func(tx *sql.Tx) interface{} {
 		return database.NewAccountDB(db)
 	})
 
-	uow.Register("TransactionDb", func(tx *sql.Tx) interface{} {
+	uow.Register("TransactionDB", func(tx *sql.Tx) interface{} {
 		return database.NewTransactionDB(db)
 	})
 
