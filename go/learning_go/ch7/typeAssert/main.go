@@ -13,4 +13,8 @@ func main() {
 	i2 := i.(MyInt)
 	i3 := i2 + 4
 	fmt.Println(i3)
+
+	// crashes if we not use comma ok idiom
+	i4, ok := i.(int)
+	fmt.Println(ok, i4)
 }
