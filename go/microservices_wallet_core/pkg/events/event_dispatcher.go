@@ -1,6 +1,9 @@
 package events
 
-import "errors"
+import (
+	"errors"
+	"sync"
+)
 
 type EventDispatcher struct {
 	handlers map[string][]EventHandlerInterface
@@ -42,16 +45,14 @@ func (ed *EventDispatcher) Has(evetName string, handler EventHandlerInterface) b
 }
 
 func (ed *EventDispatcher) Dispatch(event EventInterface) error {
-	handlers, ok := ed.handlers[event.GetName()]
-
-	if !ok {
-		return errors.New("There is no handler for event")
+	if handlers, ok := ed.handlers[event.GetName()]; ok {
+		wg := &sync.WaitGroup{}
+		for _, handler := range handlers {
+			wg.Add(1)
+			go handler.Handle(event, wg)
+		}
+		wg.Wait()
 	}
-
-	for _, h := range handlers {
-		go h.Handle(event)
-	}
-
 	return nil
 }
 
