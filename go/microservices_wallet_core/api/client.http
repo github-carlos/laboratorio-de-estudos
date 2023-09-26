@@ -24,3 +24,6 @@ Content-Type: application/json
     "account_id_to": "f22297c6-424f-4c4e-b32e-2eef3c6f8500",
     "amount": 10
 }
+
+###
+GET http://localhost:8080/clients HTTP/1.1
