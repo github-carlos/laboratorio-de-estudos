@@ -22,7 +22,7 @@ Content-Type: application/json
 {
     "account_id_from": "7637aa59-f257-4c50-af91-96b9bcd84c0b",
     "account_id_to": "f22297c6-424f-4c4e-b32e-2eef3c6f8500",
-    "amount": 10
+    "amount": 1
 }
 
 ###
