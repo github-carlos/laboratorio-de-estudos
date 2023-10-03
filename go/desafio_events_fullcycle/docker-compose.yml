@@ -25,6 +25,19 @@ services:
       - 3306:3306
     volumes:
       - .docker/mysql:/var/lib/mysql
+      - ./scripts/walletcore:/docker-entrypoint-initdb.d
+  mysql-consumerapp:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wallet
+      MYSQL_PASSWORD: root
+    ports:
+      - 3307:3306
+    volumes:
+      - .docker/mysql2:/var/lib/mysql
+      - ./scripts/consumerapi:/docker-entrypoint-initdb.d
   zookeeper:
     image: 'confluentinc/cp-zookeeper:6.1.0'
     container_name: zookeeper

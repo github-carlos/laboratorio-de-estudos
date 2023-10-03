@@ -18,7 +18,7 @@ func NewKafkaConsumer(config *kafka.ConfigMap, topic string) *Consumer {
 	};
 }
 
-func (c *Consumer) Consume() error {
+func (c *Consumer) Consume(channel chan *kafka.Message) error {
 	newConsumer, err := kafka.NewConsumer(c.config)
 
 	if err != nil {
@@ -39,6 +39,6 @@ func (c *Consumer) Consume() error {
 		if err != nil {
 			fmt.Println("Error reading topic", err)
 		}
-		fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
+		channel <- msg;
 	}
 }

@@ -17,13 +17,20 @@ func main() {
 		"group.id": "wallet",
 	}
 
+	balancesChannel := make(chan *ckafka.Message)
 	consumer := kafka.NewKafkaConsumer(configMap, "balances")
-	consumer.Consume()
+	go consumer.Consume(balancesChannel)
+
+	go func() {
+		for msg := range balancesChannel {
+			fmt.Println("Message", msg)
+		}
+	}()
 
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
 
-	r.Run()
+	r.Run(":8080")
 }
