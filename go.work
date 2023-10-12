@@ -1,0 +1,11 @@
+go 1.21.1
+
+use (
+	./go/desafio_events_fullcycle/consumer_api
+	./go/desafio_events_fullcycle/microservices_wallet_core
+	./go/hello_world
+	./go/learning_go/ch1
+	./go/learning_go/ch3
+	./go/modules
+	./hexagonal_arch
+)

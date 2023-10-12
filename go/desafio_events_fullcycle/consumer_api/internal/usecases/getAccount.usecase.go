@@ -1,11 +1,26 @@
 package usecases
 
-type GetAccountUseCase struct {}
+import (
+	"consumer-api/internal/entities"
+	"consumer-api/internal/repositories"
+)
 
-func (uc *GetAccountUseCase) Run() (string, error) {
-	return "Carlos Eduardo", nil
+type GetAccountUseCase struct {
+	repository repositories.AccountRepositoryInterface
 }
 
-func NewGetAccountUseCase() *GetAccountUseCase {
-	return &GetAccountUseCase{}
+func (uc *GetAccountUseCase) Run(uuid string) (*entities.Account, error) {
+	account, err := uc.repository.Find(uuid)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return account, nil
+}
+
+func NewGetAccountUseCase(repository repositories.AccountRepositoryInterface) *GetAccountUseCase {
+	return &GetAccountUseCase{
+		repository: repository,
+	}
 }

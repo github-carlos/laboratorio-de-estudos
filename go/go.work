@@ -1,6 +1,9 @@
-go 1.20
+go 1.21.1
 
 use ./learning_go/ch1
+
 use ./learning_go/ch3
+
 use ./desafio_events_fullcycle/microservices_wallet_core
+
 use ./desafio_events_fullcycle/consumer_api
